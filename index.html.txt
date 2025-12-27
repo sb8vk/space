@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saahithi Budharaju | Technical Operator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #9b59b6; --orange: #e74c3c; --gold: #f39c12;
+            --bg: #0a0a0a; --text: #ffffff; --card-bg: rgba(255, 255, 255, 0.03);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif; background: var(--bg);
+            color: var(--text); overflow-x: hidden; line-height: 1.6;
+        }
+        #neuralCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 0.6;
+        }
+        .container {
+            position: relative; z-index: 1; max-width: 1200px;
+            margin: 0 auto; padding: 4rem 2rem;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 5rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+        }
+        .logo { font-weight: 600; letter-spacing: -1px; font-size: 1.5rem; }
+        nav { display: flex; gap: 2rem; }
+        .nav-tab {
+            cursor: pointer; color: #888; transition: 0.3s; font-size: 0.9rem;
+        }
+        .nav-tab.active { color: var(--text); font-weight: 600; }
+        
+        .hero { margin-bottom: 4rem; max-width: 800px; }
+        .hero h1 { font-size: 3rem; font-weight: 300; margin-bottom: 1rem; }
+        .hero p { color: #aaa; font-size: 1.1rem; }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem; align-items: start;
+        }
+        .card {
+            background: var(--card-bg); padding: 2rem; border-radius: 4px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+        }
+        .card:hover, .card.highlighted {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--purple); transform: translateY(-5px);
+        }
+        .card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+        .card-body { font-size: 0.95rem; color: #ccc; margin-bottom: 1rem; }
+        .card-meta { font-size: 0.8rem; color: var(--purple); font-style: italic; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+            #neuralCanvas { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="neuralCanvas"></canvas>
+    <div class="container">
+        <header>
+            <div class="logo">SAAHITHI BUDHARAJU // 10X</div>
+            <nav id="tabs">
+                <div class="nav-tab active" data-tab="learning">SYNAPSES</div>
+                <div class="nav-tab" data-tab="retrospect">SOLIDIFIED</div>
+                <div class="nav-tab" data-tab="models">PRINCIPLES</div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1 id="heroTitle">Subtractive Innovation</h1>
+            <p id="heroDesc">Removing complexity to unlock 10x scale. Engineering the connective tissue between science fiction and global markets.</p>
+        </section>
+
+        <div class="grid" id="contentGrid"></div>
+    </div>
+
+    <script>
+        const CONTENT = {
+            models: [
+                { id: 'sub', title: 'Power of Subtraction', body: 'Innovation is found in what you remove. Pruning 150+ legacy systems unlocked $275M in value—proving subtraction is the key to scale.', meta: '→ Principle: Optimize via rationalization' },
+                { id: 'dis', title: 'Passionate Dispassion', body: 'Loving a project intensely while maintaining the mathematical humility to kill it if the techno-economics don’t close.', meta: '→ Principle: Dispassionate assessment' }
+            ],
+            learning: [
+                { id: 'l1', title: 'Techno-Economic Modeling', body: 'Currently stress-testing the bridge between "Science Fiction" prototypes and market viability at X.', models: ['sub', 'dis'], meta: '→ Status: Active Experiment' },
+                { id: 'l2', title: 'Full-Stack Operationalizing', body: 'Architecting Snowflake data lifecycles and Python-based ETL to de-risk non-technical hurdles.', models: ['sub'], meta: '→ Skill: Technical Foundation' }
+            ],
+            retrospect: [
+                { id: 'r1', title: '$275M Portfolio Rationalization', body: 'Redesigning high-volume operational workflows to achieve a 47% reduction in processing time.', models: ['sub'], meta: '→ Result: 10x Impact' }
+            ]
+        };
+
+        let canvas, ctx, particles = [], activePos = null;
+
+        function init() {
+            canvas = document.getElementById('neuralCanvas');
+            ctx = canvas.getContext('2d');
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+            for(let i=0; i<100; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5 });
+            render('learning');
+            animate();
+        }
+
+        function render(tab) {
+            const grid = document.getElementById('contentGrid');
+            grid.innerHTML = '';
+            CONTENT[tab].forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `<div class="card-title">${item.title}</div><div class="card-body">${item.body}</div><div class="card-meta">${item.meta}</div>`;
+                div.onclick = (e) => {
+                    document.querySelectorAll('.card').forEach(c => c.classList.remove('highlighted'));
+                    div.classList.add('highlighted');
+                    const rect = div.getBoundingClientRect();
+                    activePos = { x: rect.left + rect.width/2, y: rect.top + rect.height/2 };
+                };
+                grid.appendChild(div);
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                let speed = 1;
+                if(activePos) {
+                    const d = Math.sqrt((p.x-activePos.x)**2 + (p.y-activePos.y)**2);
+                    if(d < 300) speed = 5 * (1 - d/300);
+                }
+                p.x += p.vx * speed; p.y += p.vy * speed;
+                if(p.x<0 || p.x>canvas.width) p.vx *= -1;
+                if(p.y<0 || p.y>canvas.height) p.vy *= -1;
+                
+                ctx.fillStyle = activePos && Math.sqrt((p.x-activePos.x)**2 + (p.y-activePos.y)**2) < 300 ? 'rgba(155, 89, 182, 0.8)' : 'rgba(255,255,255,0.2)';
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        document.querySelectorAll('.nav-tab').forEach(t => t.onclick = () => {
+            document.querySelectorAll('.nav-tab').forEach(nt => nt.classList.remove('active'));
+            t.classList.add('active');
+            render(t.dataset.tab);
+            activePos = null;
+        });
+
+        init();
+    </script>
+</body>
+</html>
