@@ -217,7 +217,7 @@ This is a personal site, but if you spot bugs or have suggestions:
 
 **Saahithi Budharaju**
 - Email: saahithi.budharaju@kellogg.northwestern.edu
-- LinkedIn: [linkedin.com/in/saahithibudharaju](https://linkedin.com/in/saahithibudharaju)
+- LinkedIn: [linkedin.com/in/sbudharaju](https://linkedin.com/in/sbudharaju)
 
 ---
 
