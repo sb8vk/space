@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saahithi Budharaju - Brain Space</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Saahithi Space</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,27 +13,38 @@
         }
 
         :root {
-            --purple: #9b59b6;
-            --orange: #e74c3c;
-            --gold: #f39c12;
-            --dark: #1a1a1a;
-            --gray: #6c757d;
-            --light-gray: #b0b0b0;
-            --bg: #fafafa;
-            --card-width: 340px;
-            --gap: 1.5rem;
+            --neural-primary: #9b59b6;
+            --neural-secondary: #e74c3c;
+            --neural-tertiary: #f39c12;
+            --dark: #0a0e27;
+            --darker: #050817;
+            --text-primary: #e8eaed;
+            --text-secondary: #9ca3af;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.12);
+        }
+
+        body.light-mode {
+            --neural-primary: #9b59b6;
+            --neural-secondary: #e74c3c;
+            --neural-tertiary: #f39c12;
+            --dark: #fafafa;
+            --darker: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(0, 0, 0, 0.1);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--dark);
+            font-family: 'Lexend', sans-serif;
+            background: var(--darker);
+            color: var(--text-primary);
             line-height: 1.6;
-            font-weight: 400;
             overflow-x: hidden;
         }
 
-        /* Neural network canvas */
+        /* Neural Network Canvas */
         #neuralCanvas {
             position: fixed;
             top: 0;
@@ -41,391 +52,528 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            opacity: 0.4;
         }
 
-        #neuralCanvas.dimmed {
-            opacity: 0.25;
+        #neuralCanvas.active {
+            opacity: 0.7;
+            transition: opacity 0.6s ease;
         }
 
-        /* Main container */
+        /* Container */
         .container {
             position: relative;
             z-index: 1;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 3rem 2rem;
+            padding: 2rem;
             min-height: 100vh;
         }
 
         /* Header */
         .header {
-            margin-bottom: 3rem;
-            padding: 2rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 2rem 0 3rem;
             flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
             gap: 1.5rem;
         }
 
-        .name {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
         .avatar {
-            width: 60px;
-            height: 60px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--purple);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+            animation: pulse-glow 3s ease-in-out infinite;
         }
 
-        .greeting {
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: var(--dark);
-            display: flex;
-            align-items: baseline;
-            white-space: nowrap;
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(155, 89, 182, 0.3); }
+            50% { box-shadow: 0 0 60px rgba(155, 89, 182, 0.5); }
         }
 
-        .greeting-hi {
-            font-weight: 400;
-            color: var(--dark);
-        }
-
-        .greeting-name {
-            font-weight: 400;
-            color: var(--dark);
-            position: relative;
-        }
-
-        /* Typing animation */
-        @keyframes typing {
-            from { max-width: 0; }
-            to { max-width: 6em; }
-        }
-
-        @keyframes blink {
-            50% { border-color: transparent; }
-        }
-
-        .typing-text {
-            overflow: hidden;
-            border-right: 2px solid var(--dark);
-            white-space: nowrap;
-            animation: typing 2s steps(10, end), blink 0.75s step-end infinite;
-            display: inline-block;
-            max-width: 6em;
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        /* Dim toggle */
-        .dim-toggle {
-            background: white;
-            border: 1px solid #e9ecef;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            color: var(--gray);
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .dim-toggle:hover {
-            border-color: var(--purple);
-            color: var(--dark);
-        }
-
-        /* Navigation tabs */
-        .nav-tabs {
-            display: flex;
-            gap: 2rem;
-            border-bottom: 1px solid #e9ecef;
-            padding-bottom: 0.5rem;
-        }
-
-        .nav-tab {
-            color: var(--gray);
-            font-size: 0.95rem;
-            font-weight: 400;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .nav-tab:hover {
-            color: var(--dark);
-        }
-
-        .nav-tab.active {
-            color: var(--dark);
-            font-weight: 500;
-        }
-
-        .nav-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--purple), var(--orange), var(--gold));
-        }
-
-        /* Tab content */
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Hero section */
-        .hero {
-            text-align: center;
-            margin: 3rem auto 4rem;
-            max-width: 700px;
-        }
-
-        .hero h1 {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        .title {
+            font-size: 1.5rem;
             font-weight: 300;
-            line-height: 1.3;
-            margin-bottom: 1rem;
             letter-spacing: -0.02em;
         }
 
-        .gradient-text {
-            font-weight: 500;
-            background: linear-gradient(135deg, var(--purple) 0%, var(--orange) 50%, var(--gold) 100%);
+        .title span {
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero-description {
-            color: var(--gray);
-            font-size: 1.05rem;
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(155, 89, 182, 0.3);
+            border-color: var(--neural-primary);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-primary);
+            transition: all 0.4s ease;
+        }
+
+        .theme-toggle .sun-icon {
+            fill: none;
+            stroke: var(--text-primary);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .theme-toggle .sun-icon {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .theme-toggle .moon-icon {
+            opacity: 1;
+        }
+
+        body.light-mode .theme-toggle .sun-icon {
+            opacity: 1;
+        }
+
+        body.light-mode .theme-toggle .moon-icon {
+            opacity: 0;
+        }
+
+        body.light-mode {
+            background: var(--darker);
+        }
+
+        /* Modal / Expanded Card View */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        body.light-mode .modal-overlay {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 3rem;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(155, 89, 182, 0.2);
+            border-color: var(--neural-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-close::before,
+        .modal-close::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: var(--text-primary);
+        }
+
+        .modal-close::before {
+            transform: rotate(45deg);
+        }
+
+        .modal-close::after {
+            transform: rotate(-45deg);
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .modal-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--neural-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            font-weight: 500;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary), var(--neural-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .modal-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--neural-primary);
+            background: rgba(155, 89, 182, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+
+        .modal-tag.secondary {
+            color: var(--neural-secondary);
+            background: rgba(231, 76, 60, 0.15);
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 2rem;
+                max-height: 95vh;
+            }
+
+            .modal-title {
+                font-size: 2rem;
+            }
+
+            .modal-body {
+                font-size: 1rem;
+            }
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: lowercase;
+        }
+
+        .nav-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.2), rgba(231, 76, 60, 0.2));
+            color: var(--text-primary);
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(155, 89, 182, 0.3);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin: 3rem auto 4rem;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .hero .gradient {
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary), var(--neural-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
             line-height: 1.7;
         }
 
-        /* Instructions */
-        .instructions {
-            text-align: center;
-            margin: 0 auto 3rem;
-            padding: 1.25rem;
-            max-width: 600px;
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .instructions strong {
-            color: var(--dark);
-        }
-
-        /* Masonry grid layout */
+        /* Grid */
         .masonry-grid {
             column-count: 3;
-            column-gap: var(--gap);
+            column-gap: 1.5rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         @media (max-width: 1024px) {
-            .masonry-grid {
-                column-count: 2;
-            }
+            .masonry-grid { column-count: 2; }
         }
 
         @media (max-width: 640px) {
-            .masonry-grid {
-                column-count: 1;
-            }
+            .masonry-grid { column-count: 1; }
+            #neuralCanvas { opacity: 0.2; }
         }
 
         /* Cards */
         .card {
             break-inside: avoid;
-            margin-bottom: var(--gap);
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
             cursor: pointer;
             position: relative;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
-            animation: slideUp 0.5s ease forwards;
+            animation: slideUp 0.6s ease forwards;
         }
 
         @keyframes slideUp {
-            to {
-                opacity: 1;
-            }
+            to { opacity: 1; }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            border-color: var(--purple);
+            border-color: rgba(155, 89, 182, 0.3);
+            box-shadow: 0 8px 40px rgba(155, 89, 182, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary));
         }
 
         .card.highlighted {
-            border-color: var(--purple);
-            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2);
-            background: linear-gradient(135deg, rgba(155, 89, 182, 0.02) 0%, rgba(243, 156, 18, 0.02) 100%);
+            border-color: var(--neural-primary);
+            box-shadow: 0 0 40px rgba(155, 89, 182, 0.4);
+            background: rgba(155, 89, 182, 0.05);
         }
 
-        .card.mental-model {
-            background: linear-gradient(135deg, rgba(155, 89, 182, 0.05) 0%, rgba(243, 156, 18, 0.05) 100%);
-            border: 2px solid var(--purple);
+        .card.highlighted::before {
+            opacity: 1;
+            background: linear-gradient(135deg, var(--neural-primary), var(--neural-secondary), var(--neural-tertiary));
         }
 
-        .card.mental-model::before {
-            content: '●';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--purple);
-            font-size: 1.5rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
-        }
-
-        /* Card content */
+        /* Card Content */
         .card-date {
-            font-size: 0.75rem;
-            color: var(--light-gray);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--neural-primary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
         }
 
         .card-title {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             font-weight: 500;
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-            color: var(--dark);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            color: var(--text-primary);
         }
 
         .card-excerpt {
-            font-size: 0.9rem;
-            color: var(--gray);
-            line-height: 1.6;
-            margin-bottom: 0.75rem;
-        }
-
-        .card-connection {
-            font-size: 0.8rem;
-            font-style: italic;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid #f1f3f4;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
         }
 
         .card-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 0.75rem;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
         }
 
         .card-tag {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
-            color: var(--light-gray);
-            background: #f8f9fa;
-            padding: 0.25rem 0.6rem;
-            border-radius: 10px;
+            color: var(--neural-primary);
+            background: rgba(155, 89, 182, 0.1);
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid rgba(155, 89, 182, 0.2);
         }
 
-        /* Category colors */
-        .card[data-category="shipping"] .card-connection {
-            color: var(--purple);
+        .card-tag.secondary {
+            color: var(--neural-secondary);
+            background: rgba(231, 76, 60, 0.1);
+            border-color: rgba(231, 76, 60, 0.2);
         }
 
-        .card[data-category="developing"] .card-connection {
-            color: var(--orange);
+        /* Category-specific styling */
+        .card[data-category="frontburner"] .card-date {
+            color: var(--neural-secondary);
         }
 
-        .card[data-category="learning"] .card-connection {
-            color: var(--gold);
+        .card[data-category="backburner"] .card-date {
+            color: var(--neural-tertiary);
         }
 
+        .card[data-category="cold-storage"] .card-date {
+            color: var(--neural-primary);
+        }
 
+        .card[data-category="questions"] .card-date {
+            color: #c77dff;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
-            :root {
-                --card-width: 100%;
-                --gap: 1rem;
-            }
-
-            #neuralCanvas {
-                display: none;
-            }
-
             .container {
-                padding: 2rem 1rem;
+                padding: 1.5rem;
             }
 
             .header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
-            }
-
-            .name {
-                flex-direction: row;
-                align-items: center;
-                gap: 0.75rem;
+                gap: 1.5rem;
             }
 
             .avatar {
-                width: 50px;
-                height: 50px;
+                width: 100px;
+                height: 100px;
             }
 
-            .greeting {
-                font-size: 1rem;
-            }
-
-            .header-controls {
+            .nav-container {
                 width: 100%;
-                justify-content: space-between;
+                overflow-x: auto;
+                justify-content: flex-start;
             }
 
-            .nav-tabs {
-                gap: 1rem;
-                font-size: 0.9rem;
+            .nav-tab {
+                white-space: nowrap;
             }
 
             .hero {
@@ -437,67 +585,86 @@
 <body>
     <canvas id="neuralCanvas"></canvas>
 
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+    </button>
+
+    <!-- Modal for Expanded Card View -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close"></button>
+            <div class="modal-header">
+                <div class="modal-date" id="modalDate"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-tags" id="modalTags"></div>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <div class="name">
-                <img src="avatar.png" alt="Saahithi" class="avatar">
-                <div class="greeting">
-                    <span class="greeting-hi">hi! i'm </span><span class="greeting-name typing-text">saahithi.</span>
-                </div>
+            <div class="logo-area">
+                <img src="avatar.png" alt="Avatar" class="avatar">
+                <h1 class="title">saahithi<span>space</span></h1>
             </div>
-            <div class="header-controls">
-                <button class="dim-toggle" id="dimToggle">
-                    <span id="dimText">brighten network</span>
-                </button>
-                <nav class="nav-tabs">
-                    <div class="nav-tab active" data-tab="learning">currently learning</div>
-                    <div class="nav-tab" data-tab="retrospect">in retrospect</div>
-                    <div class="nav-tab" data-tab="models">mental models</div>
-                </nav>
-            </div>
+            <nav class="nav-container">
+                <div class="nav-tab active" data-tab="frontburner">frontburner</div>
+                <div class="nav-tab" data-tab="backburner">backburner</div>
+                <div class="nav-tab" data-tab="cold-storage">cold storage</div>
+                <div class="nav-tab" data-tab="questions">questions</div>
+            </nav>
         </header>
 
-        <!-- Currently Learning Tab -->
-        <div class="tab-content active" data-tab-content="learning">
+        <!-- Frontburner Tab -->
+        <div class="tab-content active" data-tab-content="frontburner">
             <div class="hero">
-                <h1>What I'm <span class="gradient-text">learning now</span></h1>
-                <p class="hero-description">Active explorations, experiments in progress, and emerging patterns. These synapses are still firing—connections forming in real time.</p>
+                <h1><span class="gradient">Active explorations</span></h1>
+                <p>What's consuming high heat right now.</p>
             </div>
-
-            <div class="instructions">
-                <strong>How to explore:</strong> Click any card to see its neural pathway back to foundational mental models. The network grows and strengthens with each insight.
-            </div>
-
-            <div class="masonry-grid" id="learningGrid"></div>
+            <div class="masonry-grid" id="frontburnerGrid"></div>
         </div>
 
-        <!-- In Retrospect Tab -->
-        <div class="tab-content" data-tab-content="retrospect">
+        <!-- Backburner Tab -->
+        <div class="tab-content" data-tab-content="backburner">
             <div class="hero">
-                <h1>Looking <span class="gradient-text">back</span></h1>
-                <p class="hero-description">Solidified lessons, completed projects, and established pathways. These connections have strengthened through time and reflection.</p>
+                <h1><span class="gradient">Simmering ideas</span></h1>
+                <p>Low heat, steady progress.</p>
             </div>
-
-            <div class="instructions">
-                <strong>How to explore:</strong> These are integrated learnings. Notice how multiple insights connect to the same foundational models—that's compound knowledge at work.
-            </div>
-
-            <div class="masonry-grid" id="retrospectGrid"></div>
+            <div class="masonry-grid" id="backburnerGrid"></div>
         </div>
 
-        <!-- Mental Models Tab -->
-        <div class="tab-content" data-tab-content="models">
+        <!-- Cold Storage Tab -->
+        <div class="tab-content" data-tab-content="cold-storage">
             <div class="hero">
-                <h1>Core <span class="gradient-text">frameworks</span></h1>
-                <p class="hero-description">The mental models that anchor my thinking. Everything connects back to these foundational patterns.</p>
+                <h1><span class="gradient">Preserved insights</span></h1>
+                <p>Frozen to memory</p>
             </div>
+            <div class="masonry-grid" id="coldStorageGrid"></div>
+        </div>
 
-            <div class="instructions">
-                <strong>How to explore:</strong> Click any mental model to see all the learnings and retrospections that reference it. These are the seeds from which the orchard grows.
+        <!-- Questions Tab -->
+        <div class="tab-content" data-tab-content="questions">
+            <div class="hero">
+                <h1><span class="gradient">Open questions</span></h1>
+                <p>Starting the conversation.</p>
             </div>
-
-            <div class="masonry-grid" id="modelsGrid"></div>
+            <div class="masonry-grid" id="questionsGrid"></div>
         </div>
     </div>
 
@@ -505,215 +672,131 @@
         // ============================================
         // CONTENT DATA - EDIT THIS TO ADD NEW CARDS
         // ============================================
-        // 
-        // HOW TO ADD NEW CONTENT:
-        // 
-        // 1. Mental Models: Add to CONTENT.mentalModels array
-        //    Required fields: id, title, description, category
-        //    Category options: 'shipping', 'developing', 'learning'
         //
-        // 2. Currently Learning: Add to CONTENT.currentlyLearning array
-        //    Required fields: date, title, excerpt, category, models, connection
-        //    models: array of mental model IDs this connects to
+        // Add items to any category:
+        // - frontburner: Active, high-priority work
+        // - backburner: Background projects
+        // - coldStorage: Saved for later
+        // - questions: Open inquiries
         //
-        // 3. In Retrospect: Add to CONTENT.inRetrospect array
-        //    Same structure as Currently Learning
-        //
-        // Changes are immediate - just refresh the page!
+        // Each item needs:
+        // {
+        //     date: 'Jan 2025',
+        //     title: 'Card Title',
+        //     excerpt: 'Description...',
+        //     tags: ['tag1', 'tag2']  // optional
+        // }
         // ============================================
-        
+
         const CONTENT = {
-            mentalModels: [
+            frontburner: [
                 {
-                    id: 'compound',
-                    title: 'The Compound Garden',
-                    description: 'Small consistent actions create exponential results. A young girl planted a single apple seed. Years later, that tree dropped seeds, creating more trees. Time and patience turned one seed into endless fruit.',
-                    category: 'learning'
-                },
-                {
-                    id: 'stone-soup',
-                    title: 'The Stone Soup Village',
-                    description: 'Combining resources multiplies individual power. A traveler with only a pot and stone convinced a village to make soup together. The stone was worthless—the real magic was cooperation.',
-                    category: 'developing'
-                },
-                {
-                    id: 'perfect',
-                    title: 'The Boy Who Cried "Perfect"',
-                    description: 'Waiting for perfect means missing good enough. A boy refused every apple at the market, seeking the perfect one. By sunset, all apples were gone. Perfection is the enemy of progress.',
-                    category: 'shipping'
-                },
-                {
-                    id: 'two-buckets',
-                    title: 'The Two Buckets',
-                    description: 'Focus energy only on what you can change. Two farmers faced drought. One cursed the sky daily. The other dug a deeper well. Control what you can control.',
-                    category: 'learning'
-                },
-                {
-                    id: 'bridge-builder',
-                    title: 'The Bridge Builder\'s Apprentice',
-                    description: 'Break complex problems into basic truths. By learning gravity and support, not just copying bridges, the apprentice later built bridges no one had imagined.',
-                    category: 'shipping'
-                },
-                {
-                    id: 'merchant-scale',
-                    title: 'The Merchant\'s Scale',
-                    description: 'Seek small risks with large rewards. A merchant noticed rare spices cost little in the port but sold high inland. Small bets, big potential.',
-                    category: 'shipping'
-                },
-                {
-                    id: 'river-stone',
-                    title: 'The River Stone',
-                    description: 'Bend with forces rather than break against them. A mighty oak snapped in the storm while reeds survived. Rigidity breaks; flexibility endures.',
-                    category: 'learning'
-                },
-                {
-                    id: 'mapmaker',
-                    title: 'The Mapmaker\'s Daughter',
-                    description: 'Good maps make any journey easier. A mapmaker taught his daughter to draw maps of everything. Maps are just ways of remembering what works.',
-                    category: 'learning'
-                },
-                {
-                    id: 'fisherman-net',
-                    title: 'The Fisherman\'s Net',
-                    description: 'Value grows with connections. A fisherman with one line caught one fish. His friend wove a net—each knot strengthened others. Connections multiply strength beyond addition.',
-                    category: 'developing'
-                },
-                {
-                    id: 'shadow-counter',
-                    title: 'The Shadow Counter',
-                    description: 'Consider consequences of consequences. Children freed all rabbits to be kind. Rabbits multiplied, ate crops, and the village starved. Count not just the action, but its shadow.',
-                    category: 'learning'
-                },
-                {
-                    id: 'potter-wheel',
-                    title: 'The Potter\'s Wheel',
-                    description: 'Failure is data for improvement. A potter\'s first hundred pots cracked. Each crack taught her about heat, clay, and timing. These aren\'t failures—they\'re teachers.',
-                    category: 'learning'
-                },
-                {
-                    id: 'lighthouse',
-                    title: 'The Lighthouse Keeper',
-                    description: 'Delayed gratification for lasting rewards. Villagers mocked the lighthouse keeper for working while they played. But when storms came, his light saved ships. Daily discipline creates invisible protection.',
-                    category: 'shipping'
-                }
-            ],
-
-            currentlyLearning: [
-                {
-                    date: 'Dec 2024',
-                    title: 'Model Context Protocol & Claude',
-                    excerpt: 'MCP lets Claude work directly inside Notion. By connecting the two, you can build project templates and manage tasks natively—no more copy-paste between apps.',
-                    category: 'shipping',
-                    models: ['bridge-builder', 'mapmaker'],
-                    connection: '→ Breaking down complex integrations into simple building blocks'
-                },
-                {
-                    date: 'Dec 2024',
-                    title: 'First Week in Evanston',
-                    excerpt: 'Moving to a new city. Learning to trust strangers, build routines from scratch, and let unfamiliar places become home. Day one: no furniture, no A/C, just possibility.',
-                    category: 'learning',
-                    models: ['river-stone', 'two-buckets'],
-                    connection: '→ Adapting to new environments while controlling what I can'
-                },
-                {
-                    date: 'Nov 2024',
-                    title: 'Balancing Ambition with Presence',
-                    excerpt: 'Noticing the tension between wanting to achieve more and wanting to be more present. The ambitious part wants the next milestone. The present part knows this moment is enough.',
-                    category: 'learning',
-                    models: ['two-buckets', 'lighthouse'],
-                    connection: '→ Managing competing priorities through deliberate choice'
-                },
-                {
-                    date: 'Nov 2024',
+                    date: 'Jan 2025',
                     title: 'Building This Website',
-                    excerpt: 'Iterating on design, trying to capture personality in pixels. Learning when "good enough" beats "perfect." The first version was too complicated. This one might be too simple. The next will be just right.',
-                    category: 'shipping',
-                    models: ['perfect', 'potter-wheel'],
-                    connection: '→ Shipping vs perfecting—each iteration teaches something new'
+                    excerpt: 'Creating a clean, modular system for organizing thoughts. The neural network metaphor helps visualize how ideas connect.',
+                    tags: ['web', 'design']
                 },
                 {
-                    date: 'Nov 2024',
-                    title: 'Reading "Range" by David Epstein',
-                    excerpt: 'Why generalists triumph in a specialized world. Early specialization gets you ahead initially, but broad experience creates better problem-solvers. My path makes more sense now: statistics → cognitive science → consulting → AI → MBA.',
-                    category: 'learning',
-                    models: ['compound', 'mapmaker'],
-                    connection: '→ Each detour was building the map, not losing the way'
+                    date: 'Jan 2025',
+                    title: 'Model Context Protocol',
+                    excerpt: 'Learning how to let AI tools work directly with my data. Breaking down the complexity of connecting Claude to different platforms.',
+                    tags: ['ai', 'integration']
+                },
+                {
+                    date: 'Dec 2024',
+                    title: 'MBA First Quarter',
+                    excerpt: 'Navigating new frameworks for strategy, operations, and leadership. The challenge isn\'t the concepts—it\'s applying them fast enough.',
+                    tags: ['learning', 'kellogg']
                 }
             ],
 
-            inRetrospect: [
+            backburner: [
+                {
+                    date: 'Nov 2024',
+                    title: 'Personal Knowledge System',
+                    excerpt: 'Designing a better way to capture and connect ideas over time. Not just notes—but a web of thinking that grows smarter.',
+                    tags: ['systems', 'learning']
+                },
                 {
                     date: 'Oct 2024',
-                    title: 'Scaling AI from Pilot to Enterprise',
-                    excerpt: 'User resistance isn\'t about tech—it\'s about trust and workflow disruption. The best AI products feel invisible. Start with the smallest possible win: a 30-person pilot that works beats a 1000-person rollout that fails.',
-                    category: 'shipping',
-                    models: ['merchant-scale', 'compound'],
-                    connection: '→ Small bets compound into big wins when they actually work'
+                    title: 'AI Mentorship at Scale',
+                    excerpt: 'What if AI could help scale 1:1 mentorship? Not replace it, but amplify it. Creating personalized guidance for 100+ people.',
+                    tags: ['ai', 'mentorship']
                 },
                 {
                     date: 'Sep 2024',
-                    title: 'What 20+ Interns Taught Me About Mentorship',
-                    excerpt: 'The best mentorship moments weren\'t scheduled 1:1s. They were the 9pm Slacks about broken code, the coffee chats about career doubt, the side conversations about imposter syndrome. Good mentorship isn\'t having all the answers—it\'s making space for someone to find their own.',
-                    category: 'developing',
-                    models: ['stone-soup', 'fisherman-net'],
-                    connection: '→ Building through connection, not authority'
-                },
-                {
-                    date: 'Sep 2024',
-                    title: 'The Code Review That Changed My Feedback',
-                    excerpt: 'An intern submitted messy code. My first draft review was harsh: "This is wrong." Then I remembered being 21, terrified of my first PR. I rewrote every comment to show my thinking instead of just pointing out errors. The intern\'s next PR was excellent—not because they feared my feedback, but because they understood my reasoning.',
-                    category: 'developing',
-                    models: ['potter-wheel', 'bridge-builder'],
-                    connection: '→ Learning from failure together, not judging it alone'
-                },
+                    title: 'Consulting → Product Transition',
+                    excerpt: 'Learning to build for myself instead of clients. The mindset shift from project-based to product-based thinking.',
+                    tags: ['career', 'product']
+                }
+            ],
+
+            coldStorage: [
                 {
                     date: 'Aug 2024',
-                    title: 'Five Years at Deloitte',
-                    excerpt: 'Built AI products, led teams, ran workshops for 1100+ practitioners, coached 20+ interns. The work was good. But what I loved most was watching people get unstuck—that moment when confusion clicks into clarity. I wasn\'t just building products. I was building people\'s confidence.',
-                    category: 'developing',
-                    models: ['compound', 'fisherman-net', 'lighthouse'],
-                    connection: '→ Consistent investment in people creates lasting impact'
+                    title: 'Startup Idea: AI Learning Companion',
+                    excerpt: 'An AI that learns your goals and nudges you toward growth. Not a task manager—a thinking partner. Shelved for now, but the core idea still resonates.',
+                    tags: ['startup', 'ai']
                 },
                 {
                     date: 'Jul 2024',
-                    title: 'Deciding to Leave Consulting for Kellogg',
-                    excerpt: 'Chose learning over comfort. Chose building for myself over building for clients. Chose two years of tuition over two years of salary. The decision terrified me. But the alternative—staying comfortable—terrified me more.',
-                    category: 'learning',
-                    models: ['river-stone', 'two-buckets', 'lighthouse'],
-                    connection: '→ Bending toward growth, controlling what I could, trusting the compound effect'
+                    title: 'Workshop Frameworks from Deloitte',
+                    excerpt: 'Facilitation patterns that worked with 1100+ practitioners. Could be a book, a course, or just internal knowledge. Worth preserving.',
+                    tags: ['facilitation', 'frameworks']
                 },
                 {
                     date: 'Jun 2024',
-                    title: 'Leading AI Product Launch ($17M Revenue)',
-                    excerpt: 'Directed a 6-person team to develop go-to-market strategy for an AI productivity suite. The product was solid. But the real work was building GTM materials that made sales teams confident enough to sell it. Product launches aren\'t about features—they\'re about reducing fear of the unknown.',
-                    category: 'shipping',
-                    models: ['bridge-builder', 'stone-soup', 'mapmaker'],
-                    connection: '→ Breaking complexity down, combining team strengths, mapping the journey'
+                    title: 'Cognitive Science Research',
+                    excerpt: 'My undergrad work on memory and learning. The foundations still inform how I think about AI and education today.',
+                    tags: ['research', 'cogsci']
+                }
+            ],
+
+            questions: [
+                {
+                    date: '',
+                    title: 'How do you measure growth that isn\'t quantifiable?',
+                    excerpt: 'Becoming a better mentor, thinker, or person doesn\'t show up in metrics. How do you know you\'re improving?',
+                    tags: ['growth', 'measurement']
                 },
                 {
-                    date: 'May 2024',
-                    title: 'When the Pilot Failed',
-                    excerpt: 'Spent 8 weeks building an AI onboarding chatbot. 30-person pilot. Adoption rate: 12%. The tech worked. The UX was clean. But we solved a problem users didn\'t actually have. The hardest lesson: execution doesn\'t matter if you\'re executing the wrong thing.',
-                    category: 'shipping',
-                    models: ['potter-wheel', 'shadow-counter', 'two-buckets'],
-                    connection: '→ Failure as data. Count the consequences. Control what you can: learn and move on.'
+                    date: '',
+                    title: 'What\'s the right balance between depth and breadth?',
+                    excerpt: 'Specialization gets you hired. Range makes you adaptable. When do you commit to one path vs. staying generalist?',
+                    tags: ['career', 'learning']
+                },
+                {
+                    date: '',
+                    title: 'Can AI truly augment human creativity?',
+                    excerpt: 'Or does it just make us faster at being average? The tools are incredible, but are they making us better or just more productive?',
+                    tags: ['ai', 'creativity']
+                },
+                {
+                    date: '',
+                    title: 'What makes a good life?',
+                    excerpt: 'Achievement? Connection? Impact? Learning? All of the above? None? Still figuring this one out.',
+                    tags: ['philosophy', 'life']
                 }
             ]
         };
 
         // ============================================
-        // APPLICATION STATE & CORE FUNCTIONALITY
+        // APPLICATION STATE
         // ============================================
 
         let canvas, ctx;
         let particles = [];
-        let isDimmed = true; // Default to dimmed
-        let currentTab = 'learning';
-        let highlightedModels = new Set();
-        let activeCardPosition = null; // Track selected card position for neural brightening
+        let currentTab = 'frontburner';
+        let activeCardPosition = null;
 
-        // Initialize on load
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+            
             initializeCanvas();
             renderAllContent();
             setupEventListeners();
@@ -729,98 +812,71 @@
             ctx = canvas.getContext('2d');
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
-            
-            // Set canvas to dimmed by default
-            canvas.classList.add('dimmed');
-            
-            // Create particles
-            const particleCount = window.innerWidth < 768 ? 0 : 100;
+
+            const particleCount = window.innerWidth < 768 ? 50 : 120;
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    radius: Math.random() * 2 + 2 // Increased from 1-3 to 2-4
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    radius: Math.random() * 1.5 + 1.5
                 });
             }
         }
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.height = document.documentElement.scrollHeight;
         }
 
         function startAnimation() {
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Update and draw particles
+
+                // Update particles
                 particles.forEach(p => {
-                    // If a card is selected, particles near it move faster (synapses firing)
-                    let speed = 1;
-                    if (activeCardPosition) {
-                        const dx = p.x - activeCardPosition.x;
-                        const dy = p.y - activeCardPosition.y;
-                        const distToActive = Math.sqrt(dx * dx + dy * dy);
-                        if (distToActive < 300) {
-                            speed = 2 + (1 - distToActive / 300); // Speed up near active card
-                        }
-                    }
-                    
-                    p.x += p.vx * speed;
-                    p.y += p.vy * speed;
+                    p.x += p.vx;
+                    p.y += p.vy;
+
                     if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
                     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
                 });
-                
+
                 // Draw connections
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        
+
                         if (distance < 150) {
-                            let baseOpacity = (1 - distance / 150) * 0.4; // Increased from 0.2 to 0.4
-                            let distToActive = Infinity; // Initialize outside the if block
-                            
-                            // Brighten connections near active card
+                            let opacity = (1 - distance / 150) * 0.3;
+
+                            // Brighten near active card
                             if (activeCardPosition) {
                                 const midX = (particles[i].x + particles[j].x) / 2;
                                 const midY = (particles[i].y + particles[j].y) / 2;
-                                const dxToActive = midX - activeCardPosition.x;
-                                const dyToActive = midY - activeCardPosition.y;
-                                distToActive = Math.sqrt(dxToActive * dxToActive + dyToActive * dyToActive);
-                                
+                                const dxActive = midX - activeCardPosition.x;
+                                const dyActive = midY - activeCardPosition.y;
+                                const distToActive = Math.sqrt(dxActive * dxActive + dyActive * dyActive);
+
                                 if (distToActive < 300) {
-                                    // Brighten nearby connections MORE
                                     const brightnessFactor = 1 - distToActive / 300;
-                                    baseOpacity *= (1 + brightnessFactor * 8); // Increased from 3 to 8 (up to 9x brighter)
-                                } else {
-                                    // Dim distant connections
-                                    baseOpacity *= 0.2; // Reduced from 0.3 to 0.2 for more contrast
+                                    opacity = opacity + brightnessFactor * 0.6;
                                 }
                             }
-                            
+
                             const gradient = ctx.createLinearGradient(
                                 particles[i].x, particles[i].y,
                                 particles[j].x, particles[j].y
                             );
-                            gradient.addColorStop(0, `rgba(155, 89, 182, ${baseOpacity})`);
-                            gradient.addColorStop(0.5, `rgba(231, 76, 60, ${baseOpacity})`);
-                            gradient.addColorStop(1, `rgba(243, 156, 18, ${baseOpacity})`);
-                            
-                            // Add glow effect when active
-                            if (activeCardPosition && distToActive < 300) {
-                                ctx.shadowBlur = 10;
-                                ctx.shadowColor = `rgba(155, 89, 182, ${baseOpacity * 0.5})`;
-                            } else {
-                                ctx.shadowBlur = 0;
-                            }
-                            
+                            gradient.addColorStop(0, `rgba(155, 89, 182, ${opacity})`);
+                            gradient.addColorStop(0.5, `rgba(231, 76, 60, ${opacity})`);
+                            gradient.addColorStop(1, `rgba(243, 156, 18, ${opacity})`);
+
                             ctx.strokeStyle = gradient;
-                            ctx.lineWidth = activeCardPosition && distToActive < 300 ? 2 : 1; // Increased from 0.5/1 to 1/2
+                            ctx.lineWidth = 1;
                             ctx.beginPath();
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -828,39 +884,33 @@
                         }
                     }
                 }
-                
+
                 // Draw particles
                 particles.forEach(p => {
-                    let particleOpacity = 0.6; // Increased from 0.5
+                    let particleOpacity = 0.5;
                     let particleSize = p.radius;
-                    
-                    // Brighten particles near active card
+
                     if (activeCardPosition) {
                         const dx = p.x - activeCardPosition.x;
                         const dy = p.y - activeCardPosition.y;
                         const distToActive = Math.sqrt(dx * dx + dy * dy);
                         if (distToActive < 300) {
                             const brightnessFactor = 1 - distToActive / 300;
-                            particleOpacity = 0.6 + brightnessFactor * 0.4; // Up to full opacity
-                            particleSize = p.radius * (1 + brightnessFactor * 0.5); // Grow bigger when active
-                            
-                            // Add glow
-                            ctx.shadowBlur = 15;
-                            ctx.shadowColor = `rgba(155, 89, 182, ${particleOpacity})`;
-                        } else {
-                            particleOpacity = 0.15; // Reduced from 0.2 for more contrast
-                            ctx.shadowBlur = 0;
+                            particleOpacity = 0.5 + brightnessFactor * 0.5;
+                            particleSize = p.radius * (1 + brightnessFactor * 0.8);
                         }
-                    } else {
-                        ctx.shadowBlur = 0;
                     }
-                    
-                    ctx.fillStyle = `rgba(155, 89, 182, ${particleOpacity})`;
+
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, particleSize);
+                    gradient.addColorStop(0, `rgba(155, 89, 182, ${particleOpacity})`);
+                    gradient.addColorStop(1, `rgba(155, 89, 182, 0)`);
+
+                    ctx.fillStyle = gradient;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, particleSize, 0, Math.PI * 2);
                     ctx.fill();
                 });
-                
+
                 requestAnimationFrame(animate);
             }
             animate();
@@ -871,132 +921,122 @@
         // ============================================
 
         function renderAllContent() {
-            renderMentalModels();
-            renderCurrentlyLearning();
-            renderInRetrospect();
+            renderGrid('frontburner', 'frontburnerGrid');
+            renderGrid('backburner', 'backburnerGrid');
+            renderGrid('coldStorage', 'cold-storage', 'coldStorageGrid');
+            renderGrid('questions', 'questionsGrid');
         }
 
-        function renderMentalModels() {
-            const grid = document.getElementById('modelsGrid');
+        function renderGrid(contentKey, category, gridId) {
+            const actualCategory = category || contentKey;
+            const actualGridId = gridId || `${contentKey}Grid`;
+            const grid = document.getElementById(actualGridId);
             grid.innerHTML = '';
-            
-            CONTENT.mentalModels.forEach((model, index) => {
-                const card = createCard({
-                    ...model,
-                    type: 'mental-model'
-                }, index);
+
+            CONTENT[contentKey].forEach((item, index) => {
+                const card = createCard(item, actualCategory, index);
                 grid.appendChild(card);
             });
         }
 
-        function renderCurrentlyLearning() {
-            const grid = document.getElementById('learningGrid');
-            grid.innerHTML = '';
-            
-            CONTENT.currentlyLearning.forEach((item, index) => {
-                const card = createCard(item, index);
-                grid.appendChild(card);
-            });
-        }
-
-        function renderInRetrospect() {
-            const grid = document.getElementById('retrospectGrid');
-            grid.innerHTML = '';
-            
-            CONTENT.inRetrospect.forEach((item, index) => {
-                const card = createCard(item, index);
-                grid.appendChild(card);
-            });
-        }
-
-        function createCard(data, index) {
+        function createCard(data, category, index) {
             const card = document.createElement('div');
             card.className = 'card';
-            card.style.animationDelay = `${index * 0.1}s`;
-            
-            if (data.type === 'mental-model') {
-                card.classList.add('mental-model');
-                card.dataset.modelId = data.id;
-                card.innerHTML = `
-                    <div class="card-title">${data.title}</div>
-                    <div class="card-excerpt">${data.description}</div>
-                    <div class="card-tags">
-                        <span class="card-tag">${data.category}</span>
-                    </div>
-                `;
-                card.addEventListener('click', () => highlightModelConnections(data.id));
-            } else {
-                card.dataset.category = data.category;
-                card.dataset.models = data.models.join(',');
-                card.innerHTML = `
-                    <div class="card-date">${data.date}</div>
-                    <div class="card-title">${data.title}</div>
-                    <div class="card-excerpt">${data.excerpt}</div>
-                    <div class="card-connection">${data.connection}</div>
-                    <div class="card-tags">
-                        <span class="card-tag">${data.category}</span>
-                        ${data.models.map(m => `<span class="card-tag">#${m}</span>`).join('')}
-                    </div>
-                `;
-                card.addEventListener('click', () => highlightCardConnections(card));
-            }
-            
+            card.dataset.category = category;
+            card.style.animationDelay = `${index * 0.08}s`;
+
+            const tagsHTML = data.tags 
+                ? `<div class="card-tags">
+                     ${data.tags.map((tag, i) => 
+                       `<span class="card-tag ${i % 2 === 1 ? 'secondary' : ''}">${tag}</span>`
+                     ).join('')}
+                   </div>`
+                : '';
+
+            card.innerHTML = `
+                ${data.date ? `<div class="card-date">${data.date}</div>` : ''}
+                <div class="card-title">${data.title}</div>
+                <div class="card-excerpt">${data.excerpt}</div>
+                ${tagsHTML}
+            `;
+
+            // Store data on card for modal
+            card.dataset.cardData = JSON.stringify(data);
+
+            card.addEventListener('click', () => openCardModal(card, data));
+
             return card;
         }
 
         // ============================================
-        // INTERACTION & HIGHLIGHTING
+        // MODAL / EXPANDED CARD VIEW
         // ============================================
 
-        function highlightCardConnections(card) {
+        function openCardModal(card, data) {
+            const modal = document.getElementById('modalOverlay');
+            const modalDate = document.getElementById('modalDate');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const modalTags = document.getElementById('modalTags');
+
+            // Populate modal
+            modalDate.textContent = data.date || '';
+            modalDate.style.display = data.date ? 'block' : 'none';
+            modalTitle.textContent = data.title;
+            modalBody.textContent = data.excerpt;
+
+            // Populate tags
+            if (data.tags && data.tags.length > 0) {
+                modalTags.innerHTML = data.tags.map((tag, i) => 
+                    `<span class="modal-tag ${i % 2 === 1 ? 'secondary' : ''}">${tag}</span>`
+                ).join('');
+                modalTags.style.display = 'flex';
+            } else {
+                modalTags.style.display = 'none';
+            }
+
+            // Activate neural network around card
+            highlightCard(card);
+
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Update URL (optional - for sharing)
+            const cardId = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            history.pushState({ cardId }, '', `#${cardId}`);
+        }
+
+        function closeCardModal() {
+            const modal = document.getElementById('modalOverlay');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            clearHighlights();
+
+            // Reset URL
+            history.pushState({}, '', window.location.pathname);
+        }
+
+        // ============================================
+        // INTERACTION
+        // ============================================
+
+        function highlightCard(card) {
             clearHighlights();
             card.classList.add('highlighted');
-            
-            // Get card position for neural network brightening
+            canvas.classList.add('active');
+
             const rect = card.getBoundingClientRect();
             activeCardPosition = {
                 x: rect.left + rect.width / 2,
                 y: rect.top + rect.height / 2 + window.scrollY
             };
-            
-            const models = card.dataset.models.split(',');
-            models.forEach(modelId => {
-                const modelCard = document.querySelector(`[data-model-id="${modelId}"]`);
-                if (modelCard) {
-                    modelCard.classList.add('highlighted');
-                    highlightedModels.add(modelId);
-                }
-            });
-        }
-
-        function highlightModelConnections(modelId) {
-            clearHighlights();
-            
-            const modelCard = document.querySelector(`[data-model-id="${modelId}"]`);
-            if (modelCard) {
-                modelCard.classList.add('highlighted');
-                highlightedModels.add(modelId);
-                
-                // Get model card position for neural network brightening
-                const rect = modelCard.getBoundingClientRect();
-                activeCardPosition = {
-                    x: rect.left + rect.width / 2,
-                    y: rect.top + rect.height / 2 + window.scrollY
-                };
-            }
-            
-            document.querySelectorAll('.card:not(.mental-model)').forEach(card => {
-                const models = card.dataset.models.split(',');
-                if (models.includes(modelId)) {
-                    card.classList.add('highlighted');
-                }
-            });
         }
 
         function clearHighlights() {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('highlighted'));
-            highlightedModels.clear();
-            activeCardPosition = null; // Reset neural network brightening
+            canvas.classList.remove('active');
+            activeCardPosition = null;
         }
 
         // ============================================
@@ -1004,39 +1044,59 @@
         // ============================================
 
         function setupEventListeners() {
-            // Tab switching
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.addEventListener('click', () => switchTab(tab.dataset.tab));
             });
-            
-            // Dim toggle
-            document.getElementById('dimToggle').addEventListener('click', toggleDim);
-            
-            // Clear highlights on background click
+
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+            // Modal close handlers
+            document.getElementById('modalClose').addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeCardModal();
+            });
+
+            document.getElementById('modalOverlay').addEventListener('click', (e) => {
+                if (e.target.id === 'modalOverlay') {
+                    closeCardModal();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeCardModal();
+                }
+            });
+
+            // Handle browser back button
+            window.addEventListener('popstate', (e) => {
+                closeCardModal();
+            });
+
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.card')) {
+                if (!e.target.closest('.card') && !e.target.closest('.modal-content')) {
                     clearHighlights();
                 }
             });
         }
 
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
         function switchTab(tab) {
             currentTab = tab;
             clearHighlights();
-            
+
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-            
+
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelector(`[data-tab-content="${tab}"]`).classList.add('active');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
-        function toggleDim() {
-            isDimmed = !isDimmed;
-            canvas.classList.toggle('dimmed');
-            document.getElementById('dimText').textContent = isDimmed ? 'brighten network' : 'dim network';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
