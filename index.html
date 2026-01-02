@@ -556,6 +556,68 @@
             color: #c77dff;
         }
 
+        /* Handle variable text length - Truncate to 4 lines */
+        .card-excerpt {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Modal text should show everything */
+        .modal-body {
+            white-space: pre-wrap; /* Preserves paragraphs for long-form content */
+            max-width: 650px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* CTA Footer */
+        .cta-section {
+            margin-top: 8rem;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            background: linear-gradient(to bottom, transparent, rgba(155, 89, 182, 0.05));
+        }
+        
+        .cta-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .cta-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--neural-primary);
+        }
+        
+        .cta-btn.primary {
+            background: var(--neural-primary);
+            color: white;
+        }
+        
+        .cta-btn.secondary {
+            color: var(--text-primary);
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(155, 89, 182, 0.2);
+        }
+        
+        /* Tag Active State */
+        .card-tag.active-filter {
+            background: var(--neural-primary);
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -673,6 +735,16 @@
             </div>
             <div class="masonry-grid" id="questionsGrid"></div>
         </div>
+        
+        <!-- CTA -->
+        <footer class="cta-section">
+            <h3>Interested in these spaces?</h3>
+            <p>I'm always open to discussing AI, strategy, or the future of learning.</p>
+            <div class="cta-links">
+                <a href="mailto:saahithi.budharaju@kellogg.northwestern.edu" class="cta-btn primary">Email Me</a>
+                <a href="https://linkedin.com/in/sbudharaju" target="_blank" class="cta-btn secondary">LinkedIn</a>
+            </div>
+        </footer>
     </div>
 
     <script>
@@ -927,53 +999,70 @@
         // CONTENT RENDERING
         // ============================================
 
-        function renderAllContent() {
-            renderGrid('frontburner', 'frontburner', 'frontburnerGrid');
-            renderGrid('backburner', 'backburner', 'backburnerGrid');
-            renderGrid('coldStorage', 'cold-storage', 'coldStorageGrid'); // Fixed mapping
-            renderGrid('questions', 'questions', 'questionsGrid');
-        }
-
+        // Add this to your APPLICATION STATE
+        let activeFilter = null;
+        
         function renderGrid(contentKey, category, gridId) {
-            const grid = document.getElementById(gridId);
-            if (!grid) return; // Safety check
+            const actualGridId = gridId || `${contentKey}Grid`;
+            const grid = document.getElementById(actualGridId);
+            if (!grid) return;
             
             grid.innerHTML = '';
         
-            CONTENT[contentKey].forEach((item, index) => {
+            // Filter content based on active tag
+            const filteredContent = activeFilter 
+                ? CONTENT[contentKey].filter(item => item.tags && item.tags.includes(activeFilter))
+                : CONTENT[contentKey];
+        
+            filteredContent.forEach((item, index) => {
                 const card = createCard(item, category, index);
                 grid.appendChild(card);
             });
         }
-
-
+        
         function createCard(data, category, index) {
             const card = document.createElement('div');
             card.className = 'card';
             card.dataset.category = category;
-            card.style.animationDelay = `${index * 0.08}s`;
-
+            
+            // UI logic for tags
             const tagsHTML = data.tags 
                 ? `<div class="card-tags">
-                     ${data.tags.map((tag, i) => 
-                       `<span class="card-tag ${i % 2 === 1 ? 'secondary' : ''}">${tag}</span>`
-                     ).join('')}
+                     ${data.tags.map(tag => {
+                        const isActive = tag === activeFilter ? 'active-filter' : '';
+                        return `<span class="card-tag ${isActive}" onclick="event.stopPropagation(); toggleFilter('${tag}')">${tag}</span>`;
+                     }).join('')}
                    </div>`
                 : '';
-
+        
             card.innerHTML = `
                 ${data.date ? `<div class="card-date">${data.date}</div>` : ''}
                 <div class="card-title">${data.title}</div>
                 <div class="card-excerpt">${data.excerpt}</div>
                 ${tagsHTML}
             `;
-
-            // Store data on card for modal
-            card.dataset.cardData = JSON.stringify(data);
-
+        
             card.addEventListener('click', () => openCardModal(card, data));
-
             return card;
+        }
+        
+        function toggleFilter(tag) {
+            activeFilter = (activeFilter === tag) ? null : tag;
+            renderAllContent();
+        }
+        
+        // Ensure resize happens on tab switch to fix canvas height
+        function switchTab(tab) {
+            currentTab = tab;
+            clearHighlights();
+            
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[data-tab-content="${tab}"]`).classList.add('active');
+        
+            resizeCanvas(); // Important for background stretch
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // ============================================
