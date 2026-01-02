@@ -68,6 +68,7 @@
         /* Header & Logo */
         .header {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             padding: 2rem 0 4rem;
@@ -107,6 +108,56 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* SEARCH MODULE (NEW) */
+        .search-container {
+            position: relative;
+            margin-left: auto;
+            margin-right: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-container { margin: 0; width: 100%; order: 3; }
+            .search-input { width: 100% !important; }
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .search-input:focus {
+            width: 300px;
+            outline: none;
+            border-color: var(--neural-primary);
+            box-shadow: 0 0 15px rgba(155, 89, 182, 0.2);
+            background: var(--dark);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .highlight {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--neural-tertiary);
+            border-radius: 2px;
+            font-weight: 600;
+            padding: 0 2px;
+        }
+
         /* Tabs Navigation */
         .nav-container {
             display: flex;
@@ -116,6 +167,7 @@
             border-radius: 50px;
             border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
+            overflow-x: auto;
         }
 
         .nav-tab {
@@ -126,6 +178,7 @@
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-secondary);
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .nav-tab.active {
@@ -238,7 +291,10 @@
             width: 100%;
             position: relative;
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
+        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         body.light-mode .modal-content { background: white; }
 
@@ -269,6 +325,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .cta-section {
@@ -331,206 +388,12 @@
                 <img src="avatar.png" alt="Saahithi" class="avatar">
                 <h1 class="title">saahithi<span>space</span></h1>
             </div>
+
+            <div class="search-container">
+                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="Query system...">
+            </div>
+
             <nav class="nav-container">
                 <div class="nav-tab active" data-tab="frontburner">frontburner</div>
-                <div class="nav-tab" data-tab="backburner">backburner</div>
-                <div class="nav-tab" data-tab="cold-storage">portfolio</div>
-                <div class="nav-tab" data-tab="questions">questions</div>
-            </nav>
-        </header>
-
-        <main>
-            <div class="tab-content active" data-tab-content="frontburner">
-                <div class="hero">
-                    <h1>Active <span class="gradient-text">Heat</span></h1>
-                    <p>What's capturing my attention.</p>
-                </div>
-                <div class="masonry-grid" id="frontburnerGrid"></div>
-            </div>
-
-            <div class="tab-content" data-tab-content="backburner">
-                <div class="hero">
-                    <h1>Simmering <span class="gradient-text">Lessons</span></h1>
-                    <p>Reinforcing ideas over time.</p>
-                </div>
-                <div class="masonry-grid" id="backburnerGrid"></div>
-            </div>
-
-            <div class="tab-content" data-tab-content="cold-storage">
-                <div class="hero">
-                    <h1>Committing to <span class="gradient-text">Memory</span></h1>
-                    <p>Frozen patterns for future retrieval.</p>
-                </div>
-                <div class="masonry-grid" id="coldStorageGrid"></div>
-            </div>
-
-            <div class="tab-content" data-tab-content="questions">
-                <div class="hero">
-                    <h1>Open <span class="gradient-text">Inquiry</span></h1>
-                    <p>Conversation starters.</p>
-                </div>
-                <div class="masonry-grid" id="questionsGrid"></div>
-            </div>
-        </main>
-
-        <footer class="cta-section">
-            <h3>Let's bridge these spaces.</h3>
-            <p>Always down to chat AI, strategy, or cognitive systems.</p>
-            <div class="cta-links">
-                <a href="mailto:saahithi.budharaju@kellogg.northwestern.edu" class="cta-btn primary">Email</a>
-                <a href="https://linkedin.com/in/sbudharaju" target="_blank" class="cta-btn secondary">LinkedIn</a>
-            </div>
-        </footer>
-    </div>
-
-    <script>
-        const CONTENT = {
-            frontburner: [
-                { date: 'Jan 2026', title: 'Modular Thought Systems', excerpt: 'Refining how digital environments can mimic synaptic growth and modular learning architectures.', tags: ['systems', 'design'] },
-                { date: 'Jan 2026', title: 'Model Context Protocol', excerpt: 'Exploring the technical bridge between LLMs and local data silos for seamless AI agency.', tags: ['ai', 'tech'] },
-                { date: 'Dec 2025', title: 'Strategy & Ops at Scale', excerpt: 'Applying Kellogg MBA frameworks to real-time operational bottlenecks in high-growth startups.', tags: ['mba', 'strategy'] }
-            ],
-            backburner: [
-                { date: 'Nov 2025', title: 'Personal OS', excerpt: 'Building a personal dashboard that prioritizes "Flow" states over "To-do" lists.', tags: ['productivity'] },
-                { date: 'Oct 2025', title: 'The Mentor AI', excerpt: 'Can we encode the soft skills of high-impact mentorship into an agentic framework?', tags: ['ai', 'mentorship'] }
-            ],
-            coldStorage: [
-                { date: 'Aug 2025', title: 'Facilitation Frameworks', excerpt: 'A collection of patterns for managing complex workshops with 100+ stakeholders.', tags: ['leadership'] }
-            ],
-            questions: [
-                { date: '', title: 'Quantifying Soft Growth?', excerpt: 'How do we track the evolution of intuition and leadership maturity?', tags: ['growth'] },
-                { date: '', title: 'Depth vs Breadth', excerpt: 'At what point does range become a liability in a hyper-specialized market?', tags: ['career'] }
-            ]
-        };
-
-        let canvas, ctx, particles = [], activeFilter = null, activeCardPos = null;
-
-        function init() {
-            canvas = document.getElementById('neuralCanvas');
-            ctx = canvas.getContext('2d');
-            window.addEventListener('resize', resize);
-            resize();
-            createParticles();
-            renderAll();
-            setupListeners();
-            animate();
-        }
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
-        }
-
-        function createParticles() {
-            const count = window.innerWidth < 768 ? 40 : 100;
-            particles = Array.from({ length: count }, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                r: Math.random() * 2 + 1
-            }));
-        }
-
-        function renderAll() {
-            ['frontburner', 'backburner', 'coldStorage', 'questions'].forEach(k => {
-                const gridId = k === 'coldStorage' ? 'coldStorageGrid' : `${k}Grid`;
-                const grid = document.getElementById(gridId);
-                if (!grid) return;
-                
-                grid.innerHTML = '';
-                const filtered = activeFilter 
-                    ? CONTENT[k].filter(i => i.tags?.includes(activeFilter))
-                    : CONTENT[k];
-
-                filtered.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        ${item.date ? `<span class="card-date">${item.date}</span>` : ''}
-                        <h3 class="card-title">${item.title}</h3>
-                        <p class="card-excerpt">${item.excerpt}</p>
-                        <div class="card-tags">${(item.tags || []).map(t => `<span class="card-tag ${t === activeFilter ? 'active-filter' : ''}">${t}</span>`).join('')}</div>
-                    `;
-                    card.onclick = (e) => {
-                        if(e.target.classList.contains('card-tag')) {
-                            const tag = e.target.innerText;
-                            activeFilter = activeFilter === tag ? null : tag;
-                            renderAll();
-                        } else {
-                            openModal(item, card);
-                        }
-                    };
-                    grid.appendChild(card);
-                });
-            });
-            resize(); // Adjust canvas for new height
-        }
-
-        function openModal(item, card) {
-            const m = document.getElementById('modalOverlay');
-            document.getElementById('modalTitle').innerText = item.title;
-            document.getElementById('modalBody').innerText = item.excerpt;
-            document.getElementById('modalDate').innerText = item.date || '';
-            document.getElementById('modalTags').innerHTML = (item.tags || []).map(t => `<span class="card-tag">${t}</span>`).join('');
-            
-            const rect = card.getBoundingClientRect();
-            activeCardPos = { x: rect.left + rect.width/2, y: rect.top + rect.height/2 + window.scrollY };
-            
-            m.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function setupListeners() {
-            document.querySelectorAll('.nav-tab').forEach(t => {
-                t.onclick = () => {
-                    document.querySelectorAll('.nav-tab, .tab-content').forEach(el => el.classList.remove('active'));
-                    t.classList.add('active');
-                    document.querySelector(`[data-tab-content="${t.dataset.tab}"]`).classList.add('active');
-                    renderAll();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                };
-            });
-
-            document.getElementById('modalClose').onclick = () => {
-                document.getElementById('modalOverlay').classList.remove('active');
-                document.body.style.overflow = '';
-                activeCardPos = null;
-            };
-
-            document.getElementById('themeToggle').onclick = () => {
-                document.body.classList.toggle('light-mode');
-            };
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--neural-primary');
-                ctx.fill();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const d = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (d < 150) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(155, 89, 182, ${0.2 * (1 - d/150)})`;
-                        ctx.stroke();
-                    }
-                }
-            });
-            requestAnimationFrame(animate);
-        }
-
-        init();
-    </script>
-</body>
-</html>
+                <div class="nav-tab" data-tab="
