@@ -3,10 +3,10 @@
 const SYSTEM_DATA = {
     // NEW: Dynamic Descriptions for each Tab
     config: {
-        frontburner: "What's capturing my attention.",
-        backburner: "Simmering prototypes.",
-        portfolio: "Projects, case studies, and lessons learned.",
-        notes: "Notes and musings to remember."
+        frontburner: "what's capturing my attention.",
+        backburner: "simmering prototypes.",
+        portfolio: "experiments, case studies, and lessons learned.",
+        questions: "notes and musings to remember."
     },
     
     // CONTENT ARRAYS
@@ -14,10 +14,10 @@ const SYSTEM_DATA = {
         { 
             id: 'f1',
             date: 'Jan 2026', 
-            title: 'Securing the AI/ML Supply Chain', 
-            excerpt: 'Learning about MLSecOps and the risks, tools, and standards are being set to protect against cyberattacks.', 
-            body: '',
-            tags: ['AI', 'MLSecOps', 'Chainguard'],
+            title: 'MLSecOps for AI Supply Chains', 
+            excerpt: 'How do you verify that your ML model hasn\'t been poisoned? Learning about artifact signing, SLSA frameworks, and what Chainguard is building.', 
+            body: 'Working',
+            tags: ['security', 'ML', 'supply-chain'],
             image: '' 
         },
             ],
@@ -43,7 +43,7 @@ const SYSTEM_DATA = {
             image: '' 
         }
     ],
-    notes: [
+    questions: [
         { 
             id: 'q1',
             date: 'Jan 2026', 

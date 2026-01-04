@@ -26,7 +26,7 @@ function render() {
             ...SYSTEM_DATA.frontburner, 
             ...SYSTEM_DATA.backburner, 
             ...SYSTEM_DATA.portfolio, 
-            ...SYSTEM_DATA.notes
+            ...SYSTEM_DATA.questions
         ];
         
         dataToRender = allItems.filter(item => {
@@ -104,8 +104,10 @@ function render() {
 
 // LOGIC HELPERS
 function formatTitle(key) {
-    if(key === 'portfolio') return 'Portfolio';
-    if(key === 'notes') return 'Sticky Notes'; // Better formatting for UI
+    if(key === 'frontburner') return 'frontburner';
+    if(key === 'backburner') return 'backburner';    
+    if(key === 'portfolio') return 'portfolio';
+    if(key === 'questions') return 'wild ideas'; // Better formatting for UI
     return key.charAt(0).toUpperCase() + key.slice(1);
 }
 
