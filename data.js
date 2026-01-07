@@ -3,10 +3,10 @@
 const SYSTEM_DATA = {
     // NEW: Dynamic Descriptions for each Tab
     config: {
-        frontburner: "what's capturing my attention.",
-        backburner: "simmering prototypes.",
+        frontburner: "what i'm learning.",
+        backburner: "prototype graveyard.",
         portfolio: "experiments, case studies, and lessons learned.",
-        thoughts: "notes and musings to remember."
+        thoughts: "notes and questions i'm thinking about."
     },
     
     // CONTENT ARRAYS
@@ -64,24 +64,24 @@ const SYSTEM_DATA = {
         }
     ],
     thoughts: [
-        { 
-            id: 'q1',
-            date: 'August 2025', 
-            title: 'The Inference Compute Question', 
-            excerpt: 'OpenAI\'s o1 spends more time thinking and gets better results. If that pattern holds, what does it mean for who can actually afford to compete?',
-	    body: 'OpenAI released o1 last year and it uses more compute at inference time to think through problems step by step. The results on hard reasoning tasks were notably better than GPT-4, even though the model itself might be smaller. Which leaves me wondering: are we pricing AI wrong?\n\nIf you can get better results by letting a model think for 10 seconds instead of responding instantly, then the cost structure changes. Training a frontier model costs hundreds of millions of dollars. But inference compute scales linearly then anyone can rent more GPUs. So if inference-time compute is the path to better reasoning, does that mean the advantage of massive training runs starts to erode?\n\nI have to wonder what this means for enterprise adoption. Right now, companies optimize for cost per query. But if a model that thinks for 10 seconds gives you the right answer versus a model that responds instantly but needs human correction, which is actually cheaper? The per-query cost might be higher, but the total cost of getting to a correct answer could be lower.\n\nThen consider the on-device question. You can\'t run a trillion-parameter model on a phone, but you could give a smaller model more inference cycles. If reasoning depth matters more than parameter count, does that change what\'s possible locally? The o1 results are promising but it\'s one data point. Maybe this only works for a narrow set of reasoning tasks. Or maybe we\'re at the start of a shift where thinking time becomes the new frontier. Either way, it feels like the assumptions we\'re using to evaluate AI capabilities might need to be revisited.',
-            tags: ['inference-compute', 'economics', 'reasoning'],
-            image: '' 
-        },
 { 
-    "id": "q2",
+    "id": "q1",
     "date": "December 2025", 
     "title": "What Drives AI Feature Adoption?", 
     "excerpt": "I've launched AI products. The technically impressive ones don't always win.",
     "body": "My team built a RAG system with high accuracy and low latency. Usage tapered after the first few weeks. Meanwhile, a much simpler application that auto-generates meeting summaries had 100% adoption.\n\nThe pattern I keep noticing: features that inform users get tried and abandoned. Features that complete a workflow get adopted. The RAG system answered questions accurately, but users still had to figure out what to do with the answer. The meeting summary tool did what they were already doing, but faster. No next step required.\n\nIn another vein, multimodal models that can analyze images are technically remarkable, but how often do you actually need to ask your phone \"what is this?\" Compare that to something mundane like auto-organizing your photos by event rather than by date—less impressive, but I would use it more frequently.\n\nI have to wonder if this is why on-device AI might matter more moving forward. While privacy is a concern, I'm not convinced users actually care that much in practice. Many users upload more sensitive data to ChatGPT than they would share with their partners. The real advantage might be features that are instant, work offline, and can be deeply personalized because they learn from your actual behavior without sending data anywhere.\n\nWhich leaves me asking: what happens when AI commoditizes and every device has it? The differentiation would be whose features fit into someone's daily routine without them thinking about it.",
     "tags": ["AI-adoption", "product-thinking", "user-behavior"],
     "image": "" 
-}
+},
+        { 
+            id: 'q2',
+            date: 'August 2025', 
+            title: 'The Inference Compute Question', 
+            excerpt: 'OpenAI\'s o1 spends more time thinking and gets better results. If that pattern holds, what does it mean for who can actually afford to compete?',
+	    body: 'OpenAI released o1 last year and it uses more compute at inference time to think through problems step by step. The results on hard reasoning tasks were notably better than GPT-4, even though the model itself might be smaller. Which leaves me wondering: are we pricing AI wrong?\n\nIf you can get better results by letting a model think for 10 seconds instead of responding instantly, then the cost structure changes. Training a frontier model costs hundreds of millions of dollars. But inference compute scales linearly then anyone can rent more GPUs. So if inference-time compute is the path to better reasoning, does that mean the advantage of massive training runs starts to erode?\n\nI have to wonder what this means for enterprise adoption. Right now, companies optimize for cost per query. But if a model that thinks for 10 seconds gives you the right answer versus a model that responds instantly but needs human correction, which is actually cheaper? The per-query cost might be higher, but the total cost of getting to a correct answer could be lower.\n\nThen consider the on-device question. You can\'t run a trillion-parameter model on a phone, but you could give a smaller model more inference cycles. If reasoning depth matters more than parameter count, does that change what\'s possible locally? The o1 results are promising but it\'s one data point. Maybe this only works for a narrow set of reasoning tasks. Or maybe we\'re at the start of a shift where thinking time becomes the new frontier. Either way, it feels like the assumptions we\'re using to evaluate AI capabilities might need to be revisited.',
+            tags: ['inference-compute', 'economics', 'reasoning'],
+            image: '' 
+        }
 
     ]
 };
