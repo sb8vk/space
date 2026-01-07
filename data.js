@@ -15,24 +15,13 @@ const SYSTEM_DATA = {
             id: 'f1',
             date: 'Jan 2026', 
             title: 'MLSecOps for AI Supply Chains', 
-            excerpt: 'How do you verify that your ML model hasn\'t been poisoned? Learning about artifact signing, SLSA frameworks, and what Chainguard is building.', 
+            excerpt: 'How do you verify that your ML model hasn\'t been compromised? Learning about artifact signing, SLSA frameworks, and what Chainguard is building for open-source security.', 
             body: 'What I\'m mapping:\n• SLSA for ML (Google\'s framework) - trying to apply software build security to model training pipelines\n• Sigstore for models - cryptographic signing, but adoption is <5% because most ML teams don\'t think like security teams\n• Chainguard\'s approach - immutable container images for models, but this only solves deployment, not training\n\nWhat I\'m learning: Software supply chain security works because we have clear build artifacts and reproducible builds. ML breaks this since the training is non-deterministic, data is often proprietary, and "the artifact" keeps changing (fine-tuning, quantization, distillation).',
             tags: ['security', 'ML', 'supply-chain', 'enterprise-AI'],
             image: '' 
         },
-        { 
-            id: 'f2',
-            date: 'Jan 2026', 
-            title: 'Attention Budgeting > Time Budgeting', 
-            excerpt: 'Building a task manager that tracks cognitive load instead of hours. Early prototype suggests I\'m terrible at estimating my own mental bandwidth.', 
-            body: 'The hypothesis: Time management is a solved problem (calendars work). Attention management is not (to-do lists fail).\n\nWhat I built: A daily planner that forces me to assign each task a \"cognitive weight\" (1-5) and caps my daily total at 20 points. 5-point tasks = deep work requiring flow state. 1-point tasks = admin busywork.\n\nAfter 30 days, I learned:\n• I consistently overestimate my attention budget by ~40%.\n• Context switching costs ~2 attention points, not ~0.5 like I assumed\n\nWhat surprised me: Knowing a task\'s cognitive weight requires having done it before, and it\'s difficult to accurately estimate future weights.I\'m experimenting with AI-assisted weight estimation based on task description, but it hallucinates confidently.\n\nOn pause: This works as a prototype, but not ready to scale. Still need to rethink the model for interrupt-driven work.',
-            tags: ['productivity', 'prototype', 'personal-tools'],
-            image: '' 
-        }
-            ],
-    backburner: [
 {
-    "id": "b1",
+    "id": "f2",
     "date": "Dec 2025",
     "title": "LLM-as-a-Judge: Detecting Alignment Drift",
     "excerpt": "Built an evaluation engine that catches when agents say one thing but do another. Turns integrity into a measurable 0-1 score.",
@@ -40,6 +29,19 @@ const SYSTEM_DATA = {
     "tags": ["AI-evals", "LLM", "rapid-prototyping", "product"],
     "image": ""
 }
+
+        
+            ],
+    backburner: [
+{ 
+            id: 'b1',
+            date: 'Jan 2026', 
+            title: 'Attention Budgeting > Time Budgeting', 
+            excerpt: 'Building a task manager that tracks cognitive load instead of hours. Early prototype suggests I\'m terrible at estimating my own mental bandwidth.', 
+            body: 'The hypothesis: Time management is a solved problem (calendars work). Attention management is not (to-do lists fail).\n\nWhat I built: A daily planner that forces me to assign each task a \"cognitive weight\" (1-5) and caps my daily total at 20 points. 5-point tasks = deep work requiring flow state. 1-point tasks = admin busywork.\n\nAfter 30 days, I learned:\n• I consistently overestimate my attention budget by ~40%.\n• Context switching costs ~2 attention points, not ~0.5 like I assumed\n\nWhat surprised me: Knowing a task\'s cognitive weight requires having done it before, and it\'s difficult to accurately estimate future weights.I\'m experimenting with AI-assisted weight estimation based on task description, but it hallucinates confidently.\n\nOn pause: This works as a prototype, but not ready to scale. Still need to rethink the model for interrupt-driven work.',
+            tags: ['productivity', 'prototype', 'personal-tools'],
+            image: '' 
+        }
     ],
     portfolio: [
         { 
