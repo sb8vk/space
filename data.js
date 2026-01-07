@@ -16,7 +16,7 @@ const SYSTEM_DATA = {
             date: 'Jan 2026', 
             title: 'MLSecOps for AI Supply Chains', 
             excerpt: 'How do you verify that your ML model hasn\'t been compromised? Learning about artifact signing, SLSA frameworks, and what Chainguard is building for open-source security.', 
-            body: 'What I\'m mapping:\n• SLSA for ML (Google\'s framework) - trying to apply software build security to model training pipelines\n• Sigstore for models - cryptographic signing, but adoption is <5% because most ML teams don\'t think like security teams\n• Chainguard\'s approach - immutable container images for models, but this only solves deployment, not training\n\nWhat I\'m learning: Software supply chain security works because we have clear build artifacts and reproducible builds. ML breaks this since the training is non-deterministic, data is often proprietary, and "the artifact" keeps changing (fine-tuning, quantization, distillation).',
+            body: 'What I\'m mapping:\n• SLSA for ML - trying to apply software build security to model training pipelines\n• Chainguard\'s approach - immutable container images for models, but this only solves deployment, not training\n\nWhat I\'m learning: Software supply chain security works because we have clear build artifacts and reproducible builds. ML breaks this since the training is non-deterministic, data is often proprietary, and "the artifact" keeps changing (fine-tuning, quantization, distillation).',
             tags: ['security', 'ML', 'supply-chain', 'enterprise-AI'],
             image: '' 
         },
