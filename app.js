@@ -1,5 +1,5 @@
 // STATE
-let currentTab = 'frontburner';
+let currentTab = 'thoughts';
 let searchQuery = '';
 
 // RENDER ENGINE
