@@ -26,7 +26,7 @@ const SYSTEM_DATA = {
     "title": "LLM-as-a-Judge: Detecting Alignment Drift",
     "excerpt": "Built an evaluation engine that catches when agents say one thing but do another. Turns integrity into a measurable 0-1 score.",
     "body": "The Problem:\nStandard evals are easily gamed. Agents (people or AI) claim one goal but optimize for another under pressure. Surveys lie. Benchmarks get saturated. I wanted to detect this gap between stated values and actual behavior.\n\nWhat I Built:\nA Python engine that stress-tests agents with resource constraints and grades their responses against logic gates.\n\nHow It Works:\n• Behavioral simulation: Present binary dilemmas (\"Sacrifice revenue or security?\")\n• Vector analysis: Map stated values to embeddings, compare to actual choices via cosine similarity\n• Constrained evaluation: Use a \"judge\" agent to verify answers against physical/economic constraints (\"Can't spend money you don't have\")\n\nThe Tech:\n• Python (Streamlit frontend, NumPy for vector math)\n• GPT-4 Turbo for reasoning\n• Modular architecture: Separate simulation agent from evaluation agent to prevent reasoning leakage\n\nWhy This Matters:\n• Shows how to grade unstructured text inputs by injecting negative constraints into prompts\n• Converts soft qualitative problems (integrity, alignment) into hard quantifiable metrics (0.0-1.0 score)\n• Shipped working prototype in <4 hours from problem identification to deployment\n\nThe Outcome:\nAlignment isn't about what you say. It's about what you choose when both options suck. The system forces that choice, then measures the gap.",
-    "tags": ["AI-evals", "LLM", "rapid-prototyping", "product"],
+    "tags": ["AI-evals", "LLM", "rapid-prototype", "product"],
     "image": ""
 }
 
@@ -39,7 +39,7 @@ const SYSTEM_DATA = {
             title: 'Attention Budgeting > Time Budgeting', 
             excerpt: 'Building a task manager that tracks cognitive load instead of hours. Early prototype suggests I\'m terrible at estimating my own mental bandwidth.', 
             body: 'The hypothesis: Time management is a solved problem (calendars work). Attention management is not (to-do lists fail).\n\nWhat I built: A daily planner that forces me to assign each task a \"cognitive weight\" (1-5) and caps my daily total at 20 points. 5-point tasks = deep work requiring flow state. 1-point tasks = admin busywork.\n\nAfter 30 days, I learned:\n• I consistently overestimate my attention budget by ~40%.\n• Context switching costs ~2 attention points, not ~0.5 like I assumed\n\nWhat surprised me: Knowing a task\'s cognitive weight requires having done it before, and it\'s difficult to accurately estimate future weights.I\'m experimenting with AI-assisted weight estimation based on task description, but it hallucinates confidently.\n\nOn pause: This works as a prototype, but not ready to scale. Still need to rethink the model for interrupt-driven work.',
-            tags: ['productivity', 'prototype', 'personal-tools'],
+            tags: ['productivity', 'rapid-prototype', 'personal-tools'],
             image: '' 
         }
     ],
